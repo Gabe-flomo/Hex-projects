@@ -1,0 +1,183 @@
+schemaVersion: 3
+meta:
+  sourceVersionId: 8d46fd80-99ab-4588-a505-cab5bf52e838 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: ""
+  projectId: 84a5cd54-4751-4faf-866e-f0267e5bb381 # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: Uber rides
+  timezone: null
+  appTheme: SYS_PREF
+  codeLanguage: PYTHON
+  status: null
+  categories: []
+  castDecimalsDefault: true
+  logicQueryCacheTimeout: null
+  publishedQueryCacheTimeout: null
+projectAssets:
+  dataConnections: []
+  envVars: []
+  secrets: []
+sharedAssets:
+  secrets: []
+  vcsPackages: []
+  dataConnections:
+    - dataConnectionId: d8712116-26fc-4b08-bef3-1d29d397d30e # [Demo] Hex Public Data (snowflake)
+  externalFileIntegrations: []
+cells:
+  - cellType: TEXT
+    cellId: b452d2e5-27ad-43b3-8af8-4f8191fd4baa # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      richText:
+        - type: h1
+          children:
+            - text: Objectives
+        - type: ul
+          children:
+            - type: li
+              children:
+                - type: lic
+                  children:
+                    - text: "Retrieve data from Uber journeys. "
+            - type: li
+              children:
+                - type: lic
+                  children:
+                    - text: "Filter based on the year "
+            - type: li
+              children:
+                - type: lic
+                  children:
+                    - text: Plot the densities of pickup locations on a map.
+  - cellType: SQL
+    cellId: 72d04260-6290-4462-9edf-58e31531e3cb # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Rides
+    config:
+      source: SELECT * FROM DEMO_DATA.DEMOS.UBER_RIDES
+      dataFrameCell: false
+      dataConnectionId: d8712116-26fc-4b08-bef3-1d29d397d30e
+      resultVariableName: rides
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      useQueryMode: false
+      castDecimals: true
+      useNativeDates: true
+      outputFilteredResult: true
+      allowDuplicateColumns: false
+      tableDisplayConfig: null
+  - cellType: INPUT
+    cellId: 98a52c32-ca41-4a99-8533-f64f2072cd66 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Year
+    config:
+      inputType: DROPDOWN
+      name: year
+      outputType: DYNAMIC
+      options:
+        valueOptions:
+          dfName: rides
+          columnName: PICKUP_YEAR
+          variableName: rides['PICKUP_YEAR']
+      defaultValue: 2012
+  - cellType: CODE
+    cellId: 3fa54765-8e3c-43fe-bae7-5830a0c5c5bd # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: |-
+        print(year)
+        yearly_rides = rides[rides['PICKUP_YEAR'] == year]
+        yearly_rides.head()
+  - cellType: MAP
+    cellId: 6f623744-3df1-4400-9093-e360f5a3b58a # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      height: 520
+      map:
+        theme: hex
+        layers:
+          - id: 5887c7dc-3ff7-453a-8032-dd6b68ec8e8b
+            data:
+              coordinates:
+                system: latlng_separate
+                dataFrameLatColumn: PICKUP_LATITUDE
+                dataFrameLngColumn: PICKUP_LONGITUDE
+              dataFrameName: yearly_rides
+            fill:
+              type: dynamic
+              colors:
+                - - 255
+                  - 255
+                  - 255
+                - - 54
+                  - 92
+                  - 163
+              dataFrameColumn: FEE
+            type: scatter
+            radius:
+              type: static
+              value: 20
+            opacity: 0.6
+            visible: true
+            tooltipDataFrameColumns: []
+  - cellType: CODE
+    cellId: d552e2ee-8a56-4ca9-b36e-f40490cc8bc5 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: ""
+appLayout:
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - LAST_RUN
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  fullWidth: false
+  tabs:
+    - name: Tab 1
+      rows:
+        - columns:
+            - start: 0
+              end: 120
+              elements:
+                - showSource: false
+                  hideOutput: false
+                  type: CELL
+                  cellId: b452d2e5-27ad-43b3-8af8-4f8191fd4baa
+                  sharedFilterId: null
+                  height: null
+                  showLabel: true
+        - columns:
+            - start: 0
+              end: 30
+              elements:
+                - showSource: false
+                  hideOutput: false
+                  type: CELL
+                  cellId: 98a52c32-ca41-4a99-8533-f64f2072cd66
+                  sharedFilterId: null
+                  height: null
+                  showLabel: true
+        - columns:
+            - start: 0
+              end: 120
+              elements:
+                - showSource: false
+                  hideOutput: false
+                  type: CELL
+                  cellId: 3fa54765-8e3c-43fe-bae7-5830a0c5c5bd
+                  sharedFilterId: null
+                  height: null
+                  showLabel: true
+        - columns:
+            - start: 0
+              end: 120
+              elements:
+                - showSource: false
+                  hideOutput: false
+                  type: CELL
+                  cellId: 6f623744-3df1-4400-9093-e360f5a3b58a
+                  sharedFilterId: null
+                  height: null
+                  showLabel: true
+sharedFilters: []
