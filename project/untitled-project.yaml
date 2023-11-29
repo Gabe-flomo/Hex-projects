@@ -1,0 +1,311 @@
+schemaVersion: 3
+meta:
+  sourceVersionId: 2119ec5b-6e99-4eb3-b0c4-4a40a5abda69 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: ""
+  projectId: 5f98f2ec-509f-4c45-8d2d-fe916f2912ba # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: Untitled project
+  timezone: null
+  appTheme: SYS_PREF
+  codeLanguage: PYTHON
+  status: null
+  categories: []
+  castDecimalsDefault: true
+  logicQueryCacheTimeout: null
+  publishedQueryCacheTimeout: null
+projectAssets:
+  dataConnections: []
+  envVars: []
+  secrets: []
+sharedAssets:
+  secrets: []
+  vcsPackages: []
+  dataConnections: []
+  externalFileIntegrations: []
+cells:
+  - cellType: SQL
+    cellId: a229eda4-f5db-49b4-8686-909dcba61de5 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Df
+    config:
+      source: select * from "Clothes Collected - Clothes Repurposed.csv";
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: df
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      useQueryMode: false
+      castDecimals: true
+      useNativeDates: true
+      outputFilteredResult: true
+      allowDuplicateColumns: false
+      tableDisplayConfig: null
+  - cellType: CODE
+    cellId: 0307cc9d-e935-4265-9431-7a426c86909b # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: |-
+        df.columns = df.iloc[0]
+        dataframe = df[1:]
+        dataframe.head()
+  - cellType: MARKDOWN
+    cellId: 6ab50d5a-061d-4ab3-9b2b-f186e1380e3c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: |-
+        # Inventory analysis
+        * How many of each type is there?
+        * How many of each clothing item is there per main material
+        * Brand distribution
+  - cellType: SQL
+    cellId: 59f32bb4-4133-4adb-9afc-c6861ac99dc0 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Inventory
+    config:
+      source: select * from "Clothes Collected - Inventory.csv";
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: inventory
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      useQueryMode: false
+      castDecimals: true
+      useNativeDates: true
+      outputFilteredResult: true
+      allowDuplicateColumns: false
+      tableDisplayConfig: null
+  - cellType: CHARTV2
+    cellId: 01901cd1-7432-419c-a894-787296aaad1b # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Count of clothing type
+    config:
+      height: null
+      chartSpec:
+        type: layered
+        layers:
+          - id: 65f844ce-bfc7-4534-93b1-98640691f066
+            xAxis:
+              sort: -y
+              type: string
+              style:
+                grid:
+                  style: solid
+                ticks: {}
+                labels:
+                  angle: 45
+              dataFrameColumn: Type
+            series:
+              - id: aef869b6-c0d8-4632-a3a6-9a0ff895b317
+                type: bar
+                axis:
+                  type: string
+                  style:
+                    grid:
+                      style: solid
+                    ticks: {}
+                    labels: {}
+                  title: Count of clothes type
+                  aggregate: count
+                dataFrameColumns:
+                  - Type
+                colorOrder: ascending
+                color:
+                  type: static
+                  color: "#4580E6"
+                opacity:
+                  type: static
+                  value: 1
+                tooltip:
+                  type: auto
+                dataLabels:
+                  position: outside-end
+                barWidth: 1
+                orientation: vertical
+                layout: grouped
+            dataFrame: inventory
+        settings:
+          legend:
+            position: right
+          tooltip: true
+          selectionEnabled: false
+      chartSelection: {}
+      colorMappings:
+        Top: "#72B7B2"
+        coat: "#54A24B"
+        "null": "#EECA3B"
+        Dress: "#72B7B2"
+        Pants: "#EECA3B"
+        Shirt: "#FF9DA6"
+        Skirt: "#BAB0AC"
+        Blazer: "#F58518"
+        Shorts: "#9D755D"
+        Sweater: "#F58518"
+        Accesory: "#4C78A8"
+        Leggings: "#54A24B"
+        Body suit: "#E45756"
+        sport bra: "#FF9DA6"
+        swim suit: "#9D755D"
+        snow pants: "#B279A2"
+        Pillow Case: "#B279A2"
+        Swim trunks: "#E45756"
+        Sports dress: "#4C78A8"
+      resultVariable: filter_result
+      outputResult: false
+      displayTableConfig: null
+  - cellType: INPUT
+    cellId: 453e45b7-61f6-402d-9270-93269088dd6d # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      inputType: CHECKBOX
+      name: material_view
+      outputType: BOOLEAN
+      options:
+        style: switch
+        text: Show material percentage
+      defaultValue: true
+  - cellType: CODE
+    cellId: ab09afbf-57f9-4303-8a25-e606a747552a # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: |
+        if material_view:
+            inventory_data = inventory.copy()
+            inventory_data["Main material %"] = inventory_data["Main material %"].str.replace("[^a-zA-Z]", " ", regex=True)
+        else: 
+            inventory_data = inventory.copy()
+
+        inventory_data.head(20)
+  - cellType: CHARTV2
+    cellId: dd86639d-607b-415e-a932-c0dc0a82af85 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      height: 708
+      chartSpec:
+        type: layered
+        layers:
+          - id: 08b742e2-4631-49f2-9bda-361c43667d67
+            xAxis:
+              type: string
+              style:
+                grid:
+                  style: solid
+                ticks: {}
+                labels: {}
+              dataFrameColumn: Main material %
+            series:
+              - id: ba704245-fc06-41b9-87c7-f7353caa1062
+                type: bar
+                axis:
+                  type: string
+                  style:
+                    grid:
+                      style: solid
+                    ticks: {}
+                    labels: {}
+                  aggregate: count
+                dataFrameColumns:
+                  - Main material %
+                colorOrder: ascending
+                color:
+                  type: static
+                opacity:
+                  type: static
+                  value: 1
+                tooltip:
+                  type: auto
+                barWidth: 1
+                orientation: horizontal
+                layout: grouped
+            dataFrame: inventory_data
+        settings:
+          legend:
+            position: right
+          tooltip: true
+          selectionEnabled: false
+      chartSelection: {}
+      colorMappings: {}
+      resultVariable: filter_result_2
+      outputResult: false
+      displayTableConfig: null
+  - cellType: CODE
+    cellId: b4497a93-b14f-4b72-9232-915703c72fec # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: ""
+appLayout:
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - LAST_RUN
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  fullWidth: false
+  tabs:
+    - name: Tab 1
+      rows:
+        - columns:
+            - start: 0
+              end: 120
+              elements:
+                - showSource: false
+                  hideOutput: false
+                  type: CELL
+                  cellId: 0307cc9d-e935-4265-9431-7a426c86909b
+                  sharedFilterId: null
+                  height: null
+                  showLabel: true
+        - columns:
+            - start: 0
+              end: 120
+              elements:
+                - showSource: false
+                  hideOutput: false
+                  type: CELL
+                  cellId: 6ab50d5a-061d-4ab3-9b2b-f186e1380e3c
+                  sharedFilterId: null
+                  height: null
+                  showLabel: true
+        - columns:
+            - start: 0
+              end: 120
+              elements:
+                - showSource: false
+                  hideOutput: false
+                  type: CELL
+                  cellId: 01901cd1-7432-419c-a894-787296aaad1b
+                  sharedFilterId: null
+                  height: null
+                  showLabel: true
+        - columns:
+            - start: 0
+              end: 30
+              elements:
+                - showSource: false
+                  hideOutput: false
+                  type: CELL
+                  cellId: 453e45b7-61f6-402d-9270-93269088dd6d
+                  sharedFilterId: null
+                  height: null
+                  showLabel: true
+        - columns:
+            - start: 0
+              end: 120
+              elements:
+                - showSource: false
+                  hideOutput: false
+                  type: CELL
+                  cellId: ab09afbf-57f9-4303-8a25-e606a747552a
+                  sharedFilterId: null
+                  height: null
+                  showLabel: true
+        - columns:
+            - start: 0
+              end: 120
+              elements:
+                - showSource: false
+                  hideOutput: false
+                  type: CELL
+                  cellId: dd86639d-607b-415e-a932-c0dc0a82af85
+                  sharedFilterId: null
+                  height: null
+                  showLabel: true
+sharedFilters: []
